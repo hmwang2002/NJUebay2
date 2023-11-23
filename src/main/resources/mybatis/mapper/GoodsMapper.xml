@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebaynju.ebay_backend.mapper.GoodsMapper">
+    <insert id="addGoods" parameterType="Goods">
+        insert into goods (goodsName, description, img, seller, sellerEmail, onSale, buyer, price) values (#{goodsName}, #{description}, #{img}, #{seller}, #{sellerEmail}, #{onSale}, #{buyer}, #{price})
+    </insert>
+
+    <delete id="deleteGoods" parameterType="Goods">
+        delete from goods where goodsId = #{id}
+    </delete>
+
+    <select id="queryGoodsBygoodsId" resultType="Goods">
+        select * from goods where goodsId = #{id}
+    </select>
+
+    <select id="updateGoodsOnSale" resultType="Goods">
+        select * from goods where onSale = true
+    </select>
+
+    <select id="getBoughtGoods" resultType="Goods">
+        select * from goods where buyer = #{buyer}
+    </select>
+
+    <select id="queryUserBygoodsName" resultType="Goods">
+        select * from goods where goodsName = #{goodsName}
+    </select>
+
+    <select id="boughtGoods" resultType="Goods">
+        select * from goods where buyer = #{buyer}
+    </select>
+
+    <update id="changeInfo" parameterType="Goods">
+        update goods set goodsName = #{goodsName}, seller = #{seller}, sellerEmail = #{sellerEmail}, description = #{description}, img = #{img}, price = #{price} where goodsId = #{goodsId}
+    </update>
+
+    <update id="changeBuyer" parameterType="Goods">
+        update goods set buyer = #{buyer}, onSale = false where goodsId = #{goodsId}
+    </update>
+
+</mapper>
