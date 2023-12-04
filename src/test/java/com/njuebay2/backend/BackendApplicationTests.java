@@ -1,10 +1,10 @@
-package com.ebaynju.ebay_backend;
+package com.njuebay2.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EbayBackendApplicationTests {
+class BackendApplicationTests {
 
     @Test
     void contextLoads() {
