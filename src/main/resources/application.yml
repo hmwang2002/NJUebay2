@@ -46,3 +46,9 @@ spring:
           min-idle: 3
           # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
           max-wait: 1s
+
+  mail:
+    host: smtp.qq.com
+    username: 2509553015@qq.com
+    password: psjpzuiikduhdiea
+    default-encoding: UTF-8
