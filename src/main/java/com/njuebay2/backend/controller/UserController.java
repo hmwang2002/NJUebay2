@@ -106,6 +106,9 @@ public class UserController {
     @PostMapping("/editPhoto")
     public Response<String> editPhoto(@RequestParam("userName") String userName, @RequestParam("newPhoto") MultipartFile file) {
         String url = ossService.uploadFile(file);
+        if (url == null) {
+            return Response.failed(999, "图片上传失败");
+        }
         String res = userService.editPhoto(userName, url);
         if (res.equals("用户不存在")) {
             return Response.failed(999, res);

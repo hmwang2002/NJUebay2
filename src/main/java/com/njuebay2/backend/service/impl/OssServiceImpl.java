@@ -40,7 +40,7 @@ public class OssServiceImpl implements OssService {
             url = "https://" + bucketName + "." + endpoint.substring(8) + "/" + filename;
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             ossClient.shutdown();
         }
         return url;

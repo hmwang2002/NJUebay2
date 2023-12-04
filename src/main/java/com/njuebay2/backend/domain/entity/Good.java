@@ -6,13 +6,19 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * @author whm
  * @date 2023/12/4 11:26
  */
 @Data
 @TableName("good")
-public class Good {
+public class Good implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5423459437718783021L;
+
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -32,7 +38,7 @@ public class Good {
     private boolean onSale;
 
     @TableField("buyerId")
-    private String buyerId;
+    private Long buyerId;
 
     @TableField("price")
     private double price;
