@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/good")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class GoodController {
     private final GoodService goodService;
 

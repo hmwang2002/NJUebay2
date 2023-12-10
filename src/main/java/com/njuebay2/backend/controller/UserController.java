@@ -21,6 +21,7 @@ import java.util.Random;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     private final UserService userService;
 
@@ -35,6 +36,7 @@ public class UserController {
      * @param email
      * @return
      */
+
     @RequestMapping("/sendCode")
     public Response<?> sendCode(@RequestParam("email") @Email String email) {
         int code = random.nextInt(100000, 999999);
@@ -48,6 +50,7 @@ public class UserController {
      * @param password
      * @return
      */
+
     @RequestMapping("/login")
     public Response<?> login(@RequestParam("userName") String userName, @RequestParam("password") String password) {
         Long id = userService.login(userName, password);
@@ -65,6 +68,7 @@ public class UserController {
      * @param userVO
      * @return
      */
+
     @RequestMapping("/register")
     public Response<?> register(@RequestBody UserVO userVO) {
         String res = userService.register(userVO);
@@ -79,6 +83,7 @@ public class UserController {
      * 退出登录
      * @return
      */
+
     @RequestMapping("/logout")
     public Response<?> logout() {
         StpUtil.logout();
