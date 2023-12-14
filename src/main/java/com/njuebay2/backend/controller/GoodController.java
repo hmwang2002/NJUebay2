@@ -80,6 +80,7 @@ public class GoodController {
         }
     }
 
+    //获取正在卖的商品
     @RequestMapping("/getSellGoods")
     public Response<List<Good>> getSellGoods() {
         if (StpUtil.isLogin()) {
@@ -90,6 +91,7 @@ public class GoodController {
         }
     }
 
+    //获取我已经购买的（购物车）
     @RequestMapping("/getBoughtGoods")
     public Response<List<Good>> getBoughtGoods() {
         if (StpUtil.isLogin()) {
