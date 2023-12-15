@@ -3,12 +3,16 @@ package com.njuebay2.backend.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.njuebay2.backend.domain.entity.Good;
+import com.njuebay2.backend.domain.entity.User;
+import com.njuebay2.backend.domain.vo.Commodity;
 import com.njuebay2.backend.domain.vo.GoodVO;
 import com.njuebay2.backend.mapper.GoodMapper;
+import com.njuebay2.backend.mapper.UserMapper;
 import com.njuebay2.backend.service.GoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,12 +24,32 @@ import java.util.List;
 public class GoodServiceImpl implements GoodService {
     private final GoodMapper goodMapper;
 
+    private final UserMapper userMapper;
+
 
     @Override
-    public List<Good> getGoodsOnSale() {
+    public List<Commodity> getGoodsOnSale() {
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Good::isOnSale, true);
-        return goodMapper.selectList(queryWrapper);
+        List<Good> list = goodMapper.selectList(queryWrapper);
+        List<Commodity> commodities = new ArrayList<>();
+        for (Good good : list) {
+            User seller = userMapper.selectById(good.getSellerId());
+
+            Commodity commodity = Commodity.builder()
+                    .goodsId(good.getId())
+                    .goodsName(good.getName())
+                    .img(good.getImg())
+                    .description(good.getDescription())
+                    .seller(seller.getUserName())
+                    .sellerEmail(seller.getEmail())
+                    .onSale(good.isOnSale())
+                    .buyer("")
+                    .price(good.getPrice())
+                    .build();
+            commodities.add(commodity);
+        }
+        return commodities;
     }
 
     @Override
@@ -63,18 +87,59 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public List<Good> getBoughtGoods() {
+    public List<Commodity> getBoughtGoods() {
         Long userId = StpUtil.getLoginIdAsLong();
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Good::getBuyerId, userId);
-        return goodMapper.selectList(queryWrapper);
+        List<Good> list = goodMapper.selectList(queryWrapper);
+
+        List<Commodity> commodities = new ArrayList<>();
+        for (Good good : list) {
+            User seller = userMapper.selectById(good.getSellerId());
+            User buyer = userMapper.selectById(good.getBuyerId());
+
+            Commodity commodity = Commodity.builder()
+                    .goodsId(good.getId())
+                    .goodsName(good.getName())
+                    .img(good.getImg())
+                    .description(good.getDescription())
+                    .seller(seller.getUserName())
+                    .sellerEmail(seller.getEmail())
+                    .onSale(good.isOnSale())
+                    .buyer(buyer.getUserName())
+                    .price(good.getPrice())
+                    .build();
+            commodities.add(commodity);
+        }
+        return commodities;
     }
 
     @Override
-    public List<Good> getSellGoods() {
+    public List<Commodity> getSellGoods() {
         Long userId = StpUtil.getLoginIdAsLong();
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Good::getSellerId, userId);
-        return goodMapper.selectList(queryWrapper);
+        List<Good> list = goodMapper.selectList(queryWrapper);
+
+        List<Commodity> commodities = new ArrayList<>();
+        for (Good good : list) {
+            User seller = userMapper.selectById(good.getSellerId());
+            User buyer = userMapper.selectById(good.getBuyerId());
+            if (buyer == null) buyer = User.builder().build();
+
+            Commodity commodity = Commodity.builder()
+                    .goodsId(good.getId())
+                    .goodsName(good.getName())
+                    .img(good.getImg())
+                    .description(good.getDescription())
+                    .seller(seller.getUserName())
+                    .sellerEmail(seller.getEmail())
+                    .onSale(good.isOnSale())
+                    .buyer(buyer.getUserName())
+                    .price(good.getPrice())
+                    .build();
+            commodities.add(commodity);
+        }
+        return commodities;
     }
 }

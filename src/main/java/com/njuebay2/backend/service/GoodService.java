@@ -1,6 +1,7 @@
 package com.njuebay2.backend.service;
 
 import com.njuebay2.backend.domain.entity.Good;
+import com.njuebay2.backend.domain.vo.Commodity;
 import com.njuebay2.backend.domain.vo.GoodVO;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @date 2023/12/4 16:41
  */
 public interface GoodService {
-    List<Good> getGoodsOnSale();
+    List<Commodity> getGoodsOnSale();
 
     void addGood(GoodVO goodVO);
 
@@ -18,7 +19,7 @@ public interface GoodService {
 
     String buyGood(Long goodId);
 
-    List<Good> getBoughtGoods();
+    List<Commodity> getBoughtGoods();
 
-    List<Good> getSellGoods();
+    List<Commodity> getSellGoods();
 }

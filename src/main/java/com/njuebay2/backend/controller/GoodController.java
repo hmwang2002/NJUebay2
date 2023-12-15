@@ -2,6 +2,7 @@ package com.njuebay2.backend.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.njuebay2.backend.domain.entity.Good;
+import com.njuebay2.backend.domain.vo.Commodity;
 import com.njuebay2.backend.domain.vo.GoodVO;
 import com.njuebay2.backend.domain.vo.Response;
 import com.njuebay2.backend.service.GoodService;
@@ -42,8 +43,8 @@ public class GoodController {
 
     //获取在售商品
     @RequestMapping("/getOnSale")
-    public Response<List<Good>> getOnSale() {
-        List<Good> goods = goodService.getGoodsOnSale();
+    public Response<List<Commodity>> getOnSale() {
+        List<Commodity> goods = goodService.getGoodsOnSale();
         if (goods == null) goods = new ArrayList<>();
         return Response.success(200, "获取在售商品成功", goods);
     }
@@ -84,9 +85,9 @@ public class GoodController {
 
     //获取用户相关的出售商品
     @RequestMapping("/getSellGoods")
-    public Response<List<Good>> getSellGoods() {
+    public Response<List<Commodity>> getSellGoods() {
         if (StpUtil.isLogin()) {
-            List<Good> sellGoods = goodService.getSellGoods();
+            List<Commodity> sellGoods = goodService.getSellGoods();
             return Response.success(200, "获取出售商品成功", sellGoods);
         } else {
             return Response.failed(999, "用户未登录");
@@ -95,9 +96,9 @@ public class GoodController {
 
     //获取我已经购买的（购物车）
     @RequestMapping("/getBoughtGoods")
-    public Response<List<Good>> getBoughtGoods() {
+    public Response<List<Commodity>> getBoughtGoods() {
         if (StpUtil.isLogin()) {
-            List<Good> boughtGoods = goodService.getBoughtGoods();
+            List<Commodity> boughtGoods = goodService.getBoughtGoods();
             return Response.success(200, "获取已购商品成功", boughtGoods);
         } else {
             return Response.failed(999, "用户未登录");
