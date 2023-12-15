@@ -40,6 +40,7 @@ public class GoodController {
         return Response.success(200, "图片上传成功", url);
     }
 
+    //获取在售商品
     @RequestMapping("/getOnSale")
     public Response<List<Good>> getOnSale() {
         List<Good> goods = goodService.getGoodsOnSale();
@@ -81,7 +82,7 @@ public class GoodController {
         }
     }
 
-    //获取正在卖的商品
+    //获取用户相关的出售商品
     @RequestMapping("/getSellGoods")
     public Response<List<Good>> getSellGoods() {
         if (StpUtil.isLogin()) {
