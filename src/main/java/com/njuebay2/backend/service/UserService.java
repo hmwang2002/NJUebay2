@@ -1,5 +1,6 @@
 package com.njuebay2.backend.service;
 
+import com.njuebay2.backend.domain.entity.User;
 import com.njuebay2.backend.domain.vo.UserVO;
 
 /**
@@ -14,4 +15,6 @@ public interface UserService {
     String update(UserVO userVO);
 
     String editPhoto(String userName, String url);
+
+    User getUserInfo(String userName);
 }

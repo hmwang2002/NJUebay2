@@ -96,4 +96,19 @@ public class UserServiceImpl implements UserService {
         userMapper.updateById(user);
         return "修改用户头像成功";
     }
+
+    @Override
+    public User getUserInfo(String userName) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getUserName, userName);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user == null) {
+            return null;
+        }
+        return User.builder()
+                .userName(user.getUserName())
+                .email(user.getEmail())
+                .photo(user.getPhoto())
+                .build();
+    }
 }

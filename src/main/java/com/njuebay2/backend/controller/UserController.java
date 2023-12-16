@@ -2,6 +2,7 @@ package com.njuebay2.backend.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.njuebay2.backend.domain.entity.User;
 import com.njuebay2.backend.domain.vo.Response;
 import com.njuebay2.backend.domain.vo.UserVO;
 import com.njuebay2.backend.service.MailService;
@@ -133,5 +134,12 @@ public class UserController {
         } else {
             return Response.success(200, res, url);
         }
+    }
+
+    @PostMapping("/getUser")
+    public Response<User> getUser(@RequestParam("userName") String userName) {
+//get user info
+        User user = userService.getUserInfo(userName);
+        return user == null ? Response.failed(999, "用户不存在") : Response.success(200, "获取用户信息成功", user);
     }
 }
