@@ -28,9 +28,9 @@ spring:
 
   data:
     redis:
-      host: localhost
-      password:
-      port: 6379
+      host: 47.113.151.211
+      password: njuebay2
+      port: 6380
       database: 0
       timeout: 10s
       # 连接超时时间（毫秒）
