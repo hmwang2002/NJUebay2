@@ -37,12 +37,25 @@ public class UserController {
      * @return
      */
 
-    @RequestMapping("/sendCode")
+    @PostMapping("/sendCode")
     public Response<?> sendCode(@RequestParam("email") @Email String email) {
-        int code = random.nextInt(100000, 999999);
-        mailService.sendSimpleMail(email, "NJUebay注册验证码", String.valueOf(code));
-        return Response.success(200, "发送验证码成功");
+        try {
+            int code = random.nextInt(100000, 999999);
+            boolean isMailSent = mailService.sendSimpleMail(email, "NJUebay注册验证码", String.valueOf(code));
+
+            if (isMailSent) {
+                // 如果邮件发送成功
+                return Response.success(200, "验证码已发送成功");
+            } else {
+                // 如果邮件发送失败
+                return Response.failed(500, "验证码发送失败");
+            }
+        } catch (Exception e) {
+            // 如果遇到其他异常
+            return Response.failed(503, "发送验证码时发生异常");
+        }
     }
+
 
     /**
      * 用户登录
