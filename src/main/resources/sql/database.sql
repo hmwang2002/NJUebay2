@@ -32,7 +32,7 @@ CREATE TABLE `good` (
                         `description` text NOT NULL,
                         `img` text,
                         `sellerId` bigint NOT NULL,
-                        `onSale` tinyint(1) NOT NULL,
+                        `onSale` ENUM('ON_SALE', 'DEALING', 'SOLD') NOT NULL,
                         `buyerId` bigint DEFAULT NULL,
                         `price` float NOT NULL,
                         PRIMARY KEY (`id`),
