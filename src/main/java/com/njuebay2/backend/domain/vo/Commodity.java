@@ -1,5 +1,6 @@
 package com.njuebay2.backend.domain.vo;
 
+import com.njuebay2.backend.domain.entity.SaleState;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,7 +23,7 @@ public class Commodity {
 
     private String sellerEmail;
 
-    private boolean onSale;
+    private SaleState onSale;
 
     private String buyer;
 

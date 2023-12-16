@@ -3,6 +3,7 @@ package com.njuebay2.backend.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.njuebay2.backend.domain.entity.Good;
+import com.njuebay2.backend.domain.entity.SaleState;
 import com.njuebay2.backend.domain.entity.User;
 import com.njuebay2.backend.domain.vo.Commodity;
 import com.njuebay2.backend.domain.vo.GoodVO;
@@ -30,7 +31,7 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public List<Commodity> getGoodsOnSale() {
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Good::isOnSale, true);
+        queryWrapper.eq(Good::getOnSale, SaleState.ON_SALE);
         List<Good> list = goodMapper.selectList(queryWrapper);
         List<Commodity> commodities = new ArrayList<>();
         for (Good good : list) {
@@ -43,7 +44,7 @@ public class GoodServiceImpl implements GoodService {
                     .description(good.getDescription())
                     .seller(seller.getUserName())
                     .sellerEmail(seller.getEmail())
-                    .onSale(good.isOnSale())
+                    .onSale(good.getOnSale())
                     .buyer("")
                     .price(good.getPrice())
                     .build();
@@ -59,7 +60,7 @@ public class GoodServiceImpl implements GoodService {
         good.setDescription(goodVO.getDescription());
         good.setImg(goodVO.getImg());
         good.setSellerId(goodVO.getSellerId());
-        good.setOnSale(true);
+        good.setOnSale(SaleState.ON_SALE);
         good.setPrice(goodVO.getPrice());
         goodMapper.insert(good);
     }
@@ -69,6 +70,7 @@ public class GoodServiceImpl implements GoodService {
         goodMapper.deleteById(goodId);
     }
 
+    // 意向购买商品
     @Override
     public String buyGood(Long goodId) {
         Good good = goodMapper.selectById(goodId);
@@ -76,14 +78,14 @@ public class GoodServiceImpl implements GoodService {
             return "商品已下架";
         }
 
-        if(!good.isOnSale()) {
-            return "商品已被购买";
+        if(!good.getOnSale().equals(SaleState.ON_SALE)) {
+            return "商品已被购买或正在交易";
         }
 
-        good.setOnSale(false);
+        good.setOnSale(SaleState.DEALING);
         good.setBuyerId(StpUtil.getLoginIdAsLong());
         goodMapper.updateById(good);
-        return "购买成功";
+        return "开始交易";
     }
 
     @Override
@@ -105,7 +107,7 @@ public class GoodServiceImpl implements GoodService {
                     .description(good.getDescription())
                     .seller(seller.getUserName())
                     .sellerEmail(seller.getEmail())
-                    .onSale(good.isOnSale())
+                    .onSale(good.getOnSale())
                     .buyer(buyer.getUserName())
                     .price(good.getPrice())
                     .build();
@@ -134,7 +136,7 @@ public class GoodServiceImpl implements GoodService {
                     .description(good.getDescription())
                     .seller(seller.getUserName())
                     .sellerEmail(seller.getEmail())
-                    .onSale(good.isOnSale())
+                    .onSale(good.getOnSale())
                     .buyer(buyer.getUserName())
                     .price(good.getPrice())
                     .build();

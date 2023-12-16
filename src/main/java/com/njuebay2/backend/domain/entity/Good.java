@@ -35,7 +35,7 @@ public class Good implements Serializable {
     private Long sellerId;
 
     @TableField("onSale")
-    private boolean onSale;
+    private SaleState onSale;
 
     @TableField("buyerId")
     private Long buyerId;
@@ -43,3 +43,5 @@ public class Good implements Serializable {
     @TableField("price")
     private double price;
 }
+
+
