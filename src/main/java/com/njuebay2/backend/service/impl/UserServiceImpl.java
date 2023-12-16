@@ -106,8 +106,10 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return User.builder()
+                .userId(user.getUserId())
                 .userName(user.getUserName())
                 .email(user.getEmail())
+                .createTime(user.getCreateTime())
                 .photo(user.getPhoto())
                 .build();
     }
