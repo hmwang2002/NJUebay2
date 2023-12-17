@@ -44,6 +44,7 @@ public class MailServiceImpl implements MailService {
             redisCache.setCacheObject(receiveMail, content, 60 * 5L, TimeUnit.SECONDS);
 
             javaMailSender.send(msg);
+
             return true; // 邮件发送成功
         } catch (MailException e) {
             e.printStackTrace();
