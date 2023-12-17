@@ -72,7 +72,7 @@ public class GoodServiceImpl implements GoodService {
 
     // 意向购买商品
     @Override
-    public String buyGood(Long goodId) {
+    public String wannaBuyGood(Long goodId, Long userId) {
         Good good = goodMapper.selectById(goodId);
         if (good == null) {
             return "商品已下架";
@@ -83,7 +83,7 @@ public class GoodServiceImpl implements GoodService {
         }
 
         good.setOnSale(SaleState.DEALING);
-        good.setBuyerId(StpUtil.getLoginIdAsLong());
+        good.setBuyerId(userId);
         goodMapper.updateById(good);
         return "开始交易";
     }

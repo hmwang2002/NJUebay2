@@ -17,7 +17,7 @@ public interface GoodService {
 
     void deleteGood(Long goodId);
 
-    String buyGood(Long goodId);
+    String wannaBuyGood(Long goodId, Long userId);
 
     List<Commodity> getBoughtGoods();
 

@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -71,7 +73,10 @@ public class UserController {
         if (id != null) {
             StpUtil.login(id);
             SaTokenInfo saTokenInfo = StpUtil.getTokenInfo();
-            return Response.success(200, "登录成功！", saTokenInfo);
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("userId", id);
+            responseData.put("saTokenInfo", saTokenInfo);
+            return Response.success(200, "登录成功！", responseData);
         } else {
             return Response.failed(999, "用户名或密码错误！");
         }
