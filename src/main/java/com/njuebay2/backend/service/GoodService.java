@@ -21,7 +21,7 @@ public interface GoodService {
 
     String cancelBuyGood(Long goodId, Long userId);
 
-    List<Commodity> getBoughtGoods();
+    List<Commodity> getBoughtGoods(Long userId);
 
     List<Commodity> getSellGoods();
 }

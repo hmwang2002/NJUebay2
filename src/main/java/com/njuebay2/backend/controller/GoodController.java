@@ -110,12 +110,12 @@ public class GoodController {
 
     //获取我已经购买的（购物车）
     @RequestMapping("/getBoughtGoods")
-    public Response<List<Commodity>> getBoughtGoods() {
-        if (StpUtil.isLogin()) {
-            List<Commodity> boughtGoods = goodService.getBoughtGoods();
+    public Response<List<Commodity>> getBoughtGoods(@RequestParam("userId") Long userId) {
+//        if (StpUtil.isLogin()) {
+            List<Commodity> boughtGoods = goodService.getBoughtGoods(userId);
             return Response.success(200, "获取已购商品成功", boughtGoods);
-        } else {
-            return Response.failed(999, "用户未登录");
-        }
+//        } else {
+//            return Response.failed(999, "用户未登录");
+//        }
     }
 }

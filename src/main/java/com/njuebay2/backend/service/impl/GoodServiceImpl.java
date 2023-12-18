@@ -106,8 +106,7 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public List<Commodity> getBoughtGoods() {
-        Long userId = StpUtil.getLoginIdAsLong();
+    public List<Commodity> getBoughtGoods(Long userId) {
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Good::getBuyerId, userId);
         List<Good> list = goodMapper.selectList(queryWrapper);
