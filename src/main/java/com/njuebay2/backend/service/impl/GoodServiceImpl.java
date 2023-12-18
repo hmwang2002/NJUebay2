@@ -75,7 +75,7 @@ public class GoodServiceImpl implements GoodService {
     public String wannaBuyGood(Long goodId, Long userId) {
         Good good = goodMapper.selectById(goodId);
         if (good == null) {
-            return "商品已下架";
+            return "商品不存在";
         }
 
         if(!good.getOnSale().equals(SaleState.ON_SALE)) {
@@ -86,6 +86,23 @@ public class GoodServiceImpl implements GoodService {
         good.setBuyerId(userId);
         goodMapper.updateById(good);
         return "开始交易";
+    }
+
+    @Override
+    public String cancelBuyGood(Long goodId, Long userId) {
+        Good good = goodMapper.selectById(goodId);
+        if (good == null) {
+            return "商品不存在";
+        }
+
+        if(!good.getOnSale().equals(SaleState.DEALING)) {
+            return "商品已经不在DEALING状态";
+        }
+
+        good.setOnSale(SaleState.ON_SALE);
+        good.setBuyerId(null);
+        goodMapper.updateById(good);
+        return "交易关闭";
     }
 
     @Override

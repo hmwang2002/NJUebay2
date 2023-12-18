@@ -83,6 +83,20 @@ public class GoodController {
 //        }
     }
 
+    @RequestMapping("/cancelBuy")
+    public Response<?> CancelBuyGood(@RequestParam("goodId") Long goodId,  @RequestParam("userId") Long userId) {
+//        if (StpUtil.isLogin()) {
+        String res = goodService.cancelBuyGood(goodId, userId);
+        if (res.equals("购买成功")) {
+            return Response.success(200, res);
+        } else {
+            return Response.failed(999, res);
+        }
+//        } else {
+//            return Response.failed(999, "用户未登录");
+//        }
+    }
+
     //获取用户相关的出售商品
     @RequestMapping("/getSellGoods")
     public Response<List<Commodity>> getSellGoods() {

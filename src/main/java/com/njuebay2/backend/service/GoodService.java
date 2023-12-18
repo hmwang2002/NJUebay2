@@ -19,6 +19,8 @@ public interface GoodService {
 
     String wannaBuyGood(Long goodId, Long userId);
 
+    String cancelBuyGood(Long goodId, Long userId);
+
     List<Commodity> getBoughtGoods();
 
     List<Commodity> getSellGoods();
