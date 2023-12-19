@@ -70,31 +70,27 @@ public class GoodController {
     }
 
     @RequestMapping("/wannaBuy")
-    public Response<?> wannaBuyGood(@RequestParam("goodId") Long goodId,  @RequestParam("userId") Long userId) {
-//        if (StpUtil.isLogin()) {
-            String res = goodService.wannaBuyGood(goodId, userId);
+    public Response<?> wannaBuyGood(@RequestParam("goodId") Long goodId) {
+        if (StpUtil.isLogin()) {
+            String res = goodService.wannaBuyGood(goodId);
             if (res.equals("购买成功")) {
                 return Response.success(200, res);
             } else {
                 return Response.failed(999, res);
             }
-//        } else {
-//            return Response.failed(999, "用户未登录");
-//        }
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
     }
 
     @RequestMapping("/cancelBuy")
-    public Response<?> CancelBuyGood(@RequestParam("goodId") Long goodId,  @RequestParam("userId") Long userId) {
-//        if (StpUtil.isLogin()) {
-        String res = goodService.cancelBuyGood(goodId, userId);
-        if (res.equals("购买成功")) {
-            return Response.success(200, res);
+    public Response<?> CancelBuyGood(@RequestParam("goodId") Long goodId) {
+        if (StpUtil.isLogin()) {
+            String res = goodService.cancelBuyGood(goodId);
+                return Response.success(200, res);
         } else {
-            return Response.failed(999, res);
+            return Response.failed(999, "用户未登录");
         }
-//        } else {
-//            return Response.failed(999, "用户未登录");
-//        }
     }
 
     //获取用户相关的出售商品
@@ -110,12 +106,12 @@ public class GoodController {
 
     //获取我已经购买的（购物车）
     @RequestMapping("/getBoughtGoods")
-    public Response<List<Commodity>> getBoughtGoods(@RequestParam("userId") Long userId) {
-//        if (StpUtil.isLogin()) {
-            List<Commodity> boughtGoods = goodService.getBoughtGoods(userId);
+    public Response<List<Commodity>> getBoughtGoods() {
+        if (StpUtil.isLogin()) {
+            List<Commodity> boughtGoods = goodService.getBoughtGoods();
             return Response.success(200, "获取已购商品成功", boughtGoods);
-//        } else {
-//            return Response.failed(999, "用户未登录");
-//        }
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
     }
 }

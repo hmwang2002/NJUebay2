@@ -17,11 +17,11 @@ public interface GoodService {
 
     void deleteGood(Long goodId);
 
-    String wannaBuyGood(Long goodId, Long userId);
+    String wannaBuyGood(Long goodId);
 
-    String cancelBuyGood(Long goodId, Long userId);
+    String cancelBuyGood(Long goodId);
 
-    List<Commodity> getBoughtGoods(Long userId);
+    List<Commodity> getBoughtGoods();
 
     List<Commodity> getSellGoods();
 }

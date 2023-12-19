@@ -72,8 +72,9 @@ public class GoodServiceImpl implements GoodService {
 
     // 意向购买商品
     @Override
-    public String wannaBuyGood(Long goodId, Long userId) {
+    public String wannaBuyGood(Long goodId) {
         Good good = goodMapper.selectById(goodId);
+        Long Id = StpUtil.getLoginIdAsLong();
         if (good == null) {
             return "商品不存在";
         }
@@ -83,13 +84,13 @@ public class GoodServiceImpl implements GoodService {
         }
 
         good.setOnSale(SaleState.DEALING);
-        good.setBuyerId(userId);
+        good.setBuyerId(Id);
         goodMapper.updateById(good);
         return "开始交易";
     }
 
     @Override
-    public String cancelBuyGood(Long goodId, Long userId) {
+    public String cancelBuyGood(Long goodId) {
         Good good = goodMapper.selectById(goodId);
         if (good == null) {
             return "商品不存在";
@@ -106,8 +107,9 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public List<Commodity> getBoughtGoods(Long userId) {
+    public List<Commodity> getBoughtGoods() {
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
+        Long userId = StpUtil.getLoginIdAsLong();
         queryWrapper.eq(Good::getBuyerId, userId);
         queryWrapper.eq(Good::getOnSale, SaleState.SOLD);
         List<Good> list = goodMapper.selectList(queryWrapper);
