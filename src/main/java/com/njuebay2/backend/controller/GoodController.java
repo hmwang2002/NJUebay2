@@ -59,7 +59,7 @@ public class GoodController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public Response<?> deleteGood(@RequestParam("goodId") Long goodId) {
         if (StpUtil.isLogin()) {
             goodService.deleteGood(goodId);

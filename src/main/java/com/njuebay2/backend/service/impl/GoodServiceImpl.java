@@ -169,6 +169,7 @@ public class GoodServiceImpl implements GoodService {
         Long userId = StpUtil.getLoginIdAsLong();
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Good::getSellerId, userId);
+        queryWrapper.eq(Good::getOnSale, SaleState.ON_SALE);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
         List<Commodity> commodities = new ArrayList<>();
