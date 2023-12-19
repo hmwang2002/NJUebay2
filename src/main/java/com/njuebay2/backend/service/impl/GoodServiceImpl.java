@@ -136,6 +136,35 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
+    public List<Commodity> getReadyToBuyGoods() {
+        LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
+        Long userId = StpUtil.getLoginIdAsLong();
+        queryWrapper.eq(Good::getBuyerId, userId);
+        queryWrapper.eq(Good::getOnSale, SaleState.DEALING);
+        List<Good> list = goodMapper.selectList(queryWrapper);
+
+        List<Commodity> commodities = new ArrayList<>();
+        for (Good good : list) {
+            User seller = userMapper.selectById(good.getSellerId());
+            User buyer = userMapper.selectById(good.getBuyerId());
+
+            Commodity commodity = Commodity.builder()
+                    .goodsId(good.getId())
+                    .goodsName(good.getName())
+                    .img(good.getImg())
+                    .description(good.getDescription())
+                    .seller(seller.getUserName())
+                    .sellerEmail(seller.getEmail())
+                    .onSale(good.getOnSale())
+                    .buyer(buyer.getUserName())
+                    .price(good.getPrice())
+                    .build();
+            commodities.add(commodity);
+        }
+        return commodities;
+    }
+
+    @Override
     public List<Commodity> getSellGoods() {
         Long userId = StpUtil.getLoginIdAsLong();
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();

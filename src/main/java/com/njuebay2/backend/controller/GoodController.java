@@ -114,4 +114,14 @@ public class GoodController {
             return Response.failed(999, "用户未登录");
         }
     }
+
+    @RequestMapping("/getReadyToBuyGoods")
+    public Response<List<Commodity>> getReadyToBuyGoods() {
+        if (StpUtil.isLogin()) {
+            List<Commodity> ReadyToBuyGoods = goodService.getReadyToBuyGoods();
+            return Response.success(200, "获取已购商品成功", ReadyToBuyGoods);
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
 }
