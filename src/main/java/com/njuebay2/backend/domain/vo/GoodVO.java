@@ -10,11 +10,15 @@ import lombok.Data;
 public class GoodVO {
     private String name;
 
-    private String description;
+    private String mainDesc;
 
-    private String img;
+    private double expectPrice;
+
+    private double purchasePrice;
+
+    private String[] imgList;
 
     private Long sellerId;
 
-    private double price;
+    private String newnessDesc;
 }
