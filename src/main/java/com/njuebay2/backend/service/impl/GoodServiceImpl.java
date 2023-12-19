@@ -193,4 +193,64 @@ public class GoodServiceImpl implements GoodService {
         }
         return commodities;
     }
+
+    @Override
+    public List<Commodity> getDealingGoods() {
+        Long userId = StpUtil.getLoginIdAsLong();
+        LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Good::getSellerId, userId);
+        queryWrapper.eq(Good::getOnSale, SaleState.DEALING);
+        List<Good> list = goodMapper.selectList(queryWrapper);
+
+        List<Commodity> commodities = new ArrayList<>();
+        for (Good good : list) {
+            User seller = userMapper.selectById(good.getSellerId());
+            User buyer = userMapper.selectById(good.getBuyerId());
+            if (buyer == null) buyer = User.builder().build();
+
+            Commodity commodity = Commodity.builder()
+                    .goodsId(good.getId())
+                    .goodsName(good.getName())
+                    .img(good.getImg())
+                    .description(good.getDescription())
+                    .seller(seller.getUserName())
+                    .sellerEmail(seller.getEmail())
+                    .onSale(good.getOnSale())
+                    .buyer(buyer.getUserName())
+                    .price(good.getPrice())
+                    .build();
+            commodities.add(commodity);
+        }
+        return commodities;
+    }
+
+    @Override
+    public List<Commodity> getSoldGoods() {
+        Long userId = StpUtil.getLoginIdAsLong();
+        LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Good::getSellerId, userId);
+        queryWrapper.eq(Good::getOnSale, SaleState.SOLD);
+        List<Good> list = goodMapper.selectList(queryWrapper);
+
+        List<Commodity> commodities = new ArrayList<>();
+        for (Good good : list) {
+            User seller = userMapper.selectById(good.getSellerId());
+            User buyer = userMapper.selectById(good.getBuyerId());
+            if (buyer == null) buyer = User.builder().build();
+
+            Commodity commodity = Commodity.builder()
+                    .goodsId(good.getId())
+                    .goodsName(good.getName())
+                    .img(good.getImg())
+                    .description(good.getDescription())
+                    .seller(seller.getUserName())
+                    .sellerEmail(seller.getEmail())
+                    .onSale(good.getOnSale())
+                    .buyer(buyer.getUserName())
+                    .price(good.getPrice())
+                    .build();
+            commodities.add(commodity);
+        }
+        return commodities;
+    }
 }

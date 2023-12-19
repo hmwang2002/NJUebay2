@@ -124,4 +124,27 @@ public class GoodController {
             return Response.failed(999, "用户未登录");
         }
     }
+
+    @RequestMapping("/getDealingGoods")
+    public Response<List<Commodity>> getDealingGoods(){
+        if (StpUtil.isLogin()){
+            List<Commodity> dealingGoods = goodService.getDealingGoods();
+            return Response.success(200, "获取正在交易商品成功", dealingGoods);
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
+
+    //获取用户相关的出售商品
+    @RequestMapping("/getSoldGoods")
+    public Response<List<Commodity>> getSoldGoods() {
+        if (StpUtil.isLogin()) {
+            List<Commodity> soldGoods = goodService.getSoldGoods();
+            return Response.success(200, "获取出售商品成功", soldGoods);
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
+
+
 }
