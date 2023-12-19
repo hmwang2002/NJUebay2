@@ -16,5 +16,5 @@ public interface UserService {
 
     String editPhoto(Long userId, String url);
 
-    User getUserInfo(String userName);
+    User getUserInfo();
 }

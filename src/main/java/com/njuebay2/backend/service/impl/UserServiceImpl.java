@@ -1,6 +1,7 @@
 package com.njuebay2.backend.service.impl;
 
 import cn.dev33.satoken.secure.BCrypt;
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.njuebay2.backend.domain.entity.User;
 import com.njuebay2.backend.domain.vo.UserVO;
@@ -96,9 +97,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserInfo(String userName) {
+    public User getUserInfo() {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUserName, userName);
+        Long userId = StpUtil.getLoginIdAsLong();
+        queryWrapper.eq(User::getUserId, userId);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             return null;

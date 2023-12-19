@@ -23,5 +23,11 @@ public interface GoodService {
 
     List<Commodity> getBoughtGoods();
 
+    List<Commodity> getReadyToBuyGoods();
+
     List<Commodity> getSellGoods();
+
+    List<Commodity> getDealingGoods();
+
+    List<Commodity> getSoldGoods();
 }
