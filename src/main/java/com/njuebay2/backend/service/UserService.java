@@ -14,7 +14,7 @@ public interface UserService {
 
     String update(UserVO userVO);
 
-    String editPhoto(String userName, String url);
+    String editPhoto(Long userId, String url);
 
     User getUserInfo(String userName);
 }

@@ -85,10 +85,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String editPhoto(String userName, String url) {
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUserName, userName);
-        User user = userMapper.selectOne(queryWrapper);
+    public String editPhoto(Long userId, String url) {
+        User user = userMapper.selectById(userId);
         if (user == null) {
             return "用户不存在";
         }

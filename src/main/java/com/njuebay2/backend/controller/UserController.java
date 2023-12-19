@@ -128,12 +128,13 @@ public class UserController {
      * 更新用户头像
      */
     @PostMapping("/editPhoto")
-    public Response<String> editPhoto(@RequestParam("userName") String userName, @RequestParam("newPhoto") MultipartFile file) {
+    public Response<String> editPhoto(@RequestParam("newPhoto") MultipartFile file) {
         String url = ossService.uploadFile(file);
         if (url == null) {
             return Response.failed(999, "图片上传失败");
         }
-        String res = userService.editPhoto(userName, url);
+        Long userId = StpUtil.getLoginIdAsLong();
+        String res = userService.editPhoto(userId, url);
         if (res.equals("用户不存在")) {
             return Response.failed(999, res);
         } else {
