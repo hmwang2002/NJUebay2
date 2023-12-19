@@ -160,13 +160,13 @@ public class GoodServiceImpl implements GoodService {
             Commodity commodity = Commodity.builder()
                     .goodsId(good.getId())
                     .goodsName(good.getName())
-                    .img(good.getImg())
-                    .description(good.getDescription())
+//                    .img(good.getImg())
+//                    .description(good.getDescription())
                     .seller(seller.getUserName())
                     .sellerEmail(seller.getEmail())
                     .onSale(good.getOnSale())
                     .buyer(buyer.getUserName())
-                    .price(good.getPrice())
+//                    .price(good.getPrice())
                     .build();
             commodities.add(commodity);
         }
@@ -190,13 +190,13 @@ public class GoodServiceImpl implements GoodService {
             Commodity commodity = Commodity.builder()
                     .goodsId(good.getId())
                     .goodsName(good.getName())
-                    .img(good.getImg())
-                    .description(good.getDescription())
+//                    .img(good.getImg())
+//                    .description(good.getDescription())
                     .seller(seller.getUserName())
                     .sellerEmail(seller.getEmail())
                     .onSale(good.getOnSale())
                     .buyer(buyer.getUserName())
-                    .price(good.getPrice())
+//                    .price(good.getPrice())
                     .build();
             commodities.add(commodity);
         }
@@ -220,13 +220,13 @@ public class GoodServiceImpl implements GoodService {
             Commodity commodity = Commodity.builder()
                     .goodsId(good.getId())
                     .goodsName(good.getName())
-                    .img(good.getImg())
-                    .description(good.getDescription())
+//                    .img(good.getImg())
+//                    .description(good.getDescription())
                     .seller(seller.getUserName())
                     .sellerEmail(seller.getEmail())
                     .onSale(good.getOnSale())
                     .buyer(buyer.getUserName())
-                    .price(good.getPrice())
+//                    .price(good.getPrice())
                     .build();
             commodities.add(commodity);
         }
