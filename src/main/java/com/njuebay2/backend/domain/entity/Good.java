@@ -25,11 +25,8 @@ public class Good implements Serializable {
     @TableField("name")
     private String name;
 
-    @TableField("description")
-    private String description;
-
-    @TableField("img")
-    private String img;
+    @TableField("imgList")
+    private String imgList;
 
     @TableField("sellerId")
     private Long sellerId;
@@ -40,8 +37,17 @@ public class Good implements Serializable {
     @TableField("buyerId")
     private Long buyerId;
 
-    @TableField("price")
-    private double price;
+    @TableField("newnessDesc")
+    private String newnessDesc;
+
+    @TableField("purchasePrice")
+    private double purchasePrice;
+
+    @TableField("expectPrice")
+    private double expectPrice;
+
+    @TableField("mainDesc")
+    private String mainDesc;
 }
 
 

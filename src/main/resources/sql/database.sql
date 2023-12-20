@@ -26,18 +26,36 @@ CREATE TABLE `user` (
 
 -- ebaynju2.good definition
 
+# CREATE TABLE `good` (
+#                         `id` bigint NOT NULL AUTO_INCREMENT,
+#                         `name` varchar(256) NOT NULL,
+#                         `description` text NOT NULL,
+#                         `img` text,
+#                         `sellerId` bigint NOT NULL,
+#                         `onSale` ENUM('ON_SALE', 'DEALING', 'SOLD') NOT NULL,
+#                         `buyerId` bigint DEFAULT NULL,
+#                         `price` float NOT NULL,
+#                         PRIMARY KEY (`id`),
+#                         KEY `good_FK` (`sellerId`),
+#                         KEY `good_FK_1` (`buyerId`),
+#                         CONSTRAINT `good_FK` FOREIGN KEY (`sellerId`) REFERENCES `user` (`user_id`),
+#                         CONSTRAINT `good_FK_1` FOREIGN KEY (`buyerId`) REFERENCES `user` (`user_id`)
+# ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `good` (
-                        `id` bigint NOT NULL AUTO_INCREMENT,
-                        `name` varchar(256) NOT NULL,
-                        `description` text NOT NULL,
-                        `img` text,
-                        `sellerId` bigint NOT NULL,
-                        `onSale` ENUM('ON_SALE', 'DEALING', 'SOLD') NOT NULL,
-                        `buyerId` bigint DEFAULT NULL,
-                        `price` float NOT NULL,
+                        `id` BIGINT NOT NULL AUTO_INCREMENT,
+                        `name` VARCHAR(256) NOT NULL,
+                        `imgList` TEXT,
+                        `sellerId` BIGINT NOT NULL,
+                        `onSale` ENUM('ON_SALE', 'DEALING', 'SOLD') NOT NULL, -- Assuming these are the states in SaleState enum
+                        `buyerId` BIGINT DEFAULT NULL,
+                        `newnessDesc` VARCHAR(255) DEFAULT NULL,
+                        `purchasePrice` DOUBLE NOT NULL,
+                        `expectPrice` DOUBLE NOT NULL,
+                        `mainDesc` TEXT,
                         PRIMARY KEY (`id`),
-                        KEY `good_FK` (`sellerId`),
-                        KEY `good_FK_1` (`buyerId`),
-                        CONSTRAINT `good_FK` FOREIGN KEY (`sellerId`) REFERENCES `user` (`user_id`),
-                        CONSTRAINT `good_FK_1` FOREIGN KEY (`buyerId`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+                        KEY `good_fk_seller` (`sellerId`),
+                        KEY `good_fk_buyer` (`buyerId`),
+                        CONSTRAINT `good_fk_seller` FOREIGN KEY (`sellerId`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                        CONSTRAINT `good_fk_buyer` FOREIGN KEY (`buyerId`) REFERENCES `user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
