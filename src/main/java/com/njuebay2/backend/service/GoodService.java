@@ -30,4 +30,7 @@ public interface GoodService {
     List<Commodity> getDealingGoods();
 
     List<Commodity> getSoldGoods();
+
+    String confirmDeal(Long goodId);
+
 }

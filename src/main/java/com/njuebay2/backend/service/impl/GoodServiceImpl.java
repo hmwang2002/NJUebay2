@@ -118,6 +118,21 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
+    public String confirmDeal(Long goodId) {
+        Good good = goodMapper.selectById(goodId);
+        if (good == null) {
+            return "商品不存在";
+        }
+
+        if(!good.getOnSale().equals(SaleState.DEALING)) {
+            return "并非处于交易状态";
+        }
+        good.setOnSale(SaleState.SOLD);
+        goodMapper.updateById(good);
+        return "交易完成";
+    }
+
+    @Override
     public List<Commodity> getBoughtGoods() {
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
         Long userId = StpUtil.getLoginIdAsLong();

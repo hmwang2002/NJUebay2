@@ -1,11 +1,13 @@
 package com.njuebay2.backend.domain.vo;
 
 public enum MyErrorCode {
-    NULL_USERNAME(900), NULL_PWD(901);
+    GOOD_NULL(900), STATUS_NOT_DEALING(901);
 
-    private final int status;
+    public final int status;
 
     MyErrorCode(int num){
         status = num;
     }
+
+
 };

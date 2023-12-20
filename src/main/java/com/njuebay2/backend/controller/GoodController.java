@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.njuebay2.backend.domain.entity.Good;
 import com.njuebay2.backend.domain.vo.Commodity;
 import com.njuebay2.backend.domain.vo.GoodVO;
+import com.njuebay2.backend.domain.vo.MyErrorCode;
 import com.njuebay2.backend.domain.vo.Response;
 import com.njuebay2.backend.service.GoodService;
 import com.njuebay2.backend.service.OssService;
@@ -87,7 +88,7 @@ public class GoodController {
     public Response<?> CancelBuyGood(@RequestParam("goodId") Long goodId) {
         if (StpUtil.isLogin()) {
             String res = goodService.cancelBuyGood(goodId);
-                return Response.success(200, res);
+            return Response.success(200, res);
         } else {
             return Response.failed(999, "用户未登录");
         }
@@ -141,6 +142,25 @@ public class GoodController {
         if (StpUtil.isLogin()) {
             List<Commodity> soldGoods = goodService.getSoldGoods();
             return Response.success(200, "获取出售商品成功", soldGoods);
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
+
+    @PostMapping("/confirmDeal")
+    public Response<?> confirmDeal(@RequestParam("goodId") Long goodId){
+        if (StpUtil.isLogin()) {
+            String res = goodService.cancelBuyGood(goodId);
+            if (res.equals("交易完成")){
+                return Response.success(200, "确认交易完成");
+            }
+
+            if (res.equals("商品不存在")){
+                return Response.failed(MyErrorCode.GOOD_NULL.status, res);
+            }
+
+            return Response.failed(MyErrorCode.STATUS_NOT_DEALING.status, "商品并非处于交易状态，请检查交易状况");
+
         } else {
             return Response.failed(999, "用户未登录");
         }
