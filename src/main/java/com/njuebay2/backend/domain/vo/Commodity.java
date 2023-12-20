@@ -27,5 +27,7 @@ public class Commodity {
 
     private String buyer;
 
+    private String buyerEmail;
+
     private Double price;
 }

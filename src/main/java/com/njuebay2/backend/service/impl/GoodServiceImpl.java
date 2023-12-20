@@ -46,6 +46,7 @@ public class GoodServiceImpl implements GoodService {
                     .sellerEmail(seller.getEmail())
                     .onSale(good.getOnSale())
                     .buyer("")
+                    .buyerEmail("")
                     .price(good.getPrice())
                     .build();
             commodities.add(commodity);
@@ -114,25 +115,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.SOLD);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
-        List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-
-            Commodity commodity = Commodity.builder()
-                    .goodsId(good.getId())
-                    .goodsName(good.getName())
-                    .img(good.getImg())
-                    .description(good.getDescription())
-                    .seller(seller.getUserName())
-                    .sellerEmail(seller.getEmail())
-                    .onSale(good.getOnSale())
-                    .buyer(buyer.getUserName())
-                    .price(good.getPrice())
-                    .build();
-            commodities.add(commodity);
-        }
-        return commodities;
+        return getCommodityFromGoods(list);
     }
 
     @Override
@@ -143,25 +126,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.DEALING);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
-        List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-
-            Commodity commodity = Commodity.builder()
-                    .goodsId(good.getId())
-                    .goodsName(good.getName())
-                    .img(good.getImg())
-                    .description(good.getDescription())
-                    .seller(seller.getUserName())
-                    .sellerEmail(seller.getEmail())
-                    .onSale(good.getOnSale())
-                    .buyer(buyer.getUserName())
-                    .price(good.getPrice())
-                    .build();
-            commodities.add(commodity);
-        }
-        return commodities;
+        return getCommodityFromGoods(list);
     }
 
     @Override
@@ -172,26 +137,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.ON_SALE);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
-        List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-            if (buyer == null) buyer = User.builder().build();
-
-            Commodity commodity = Commodity.builder()
-                    .goodsId(good.getId())
-                    .goodsName(good.getName())
-                    .img(good.getImg())
-                    .description(good.getDescription())
-                    .seller(seller.getUserName())
-                    .sellerEmail(seller.getEmail())
-                    .onSale(good.getOnSale())
-                    .buyer(buyer.getUserName())
-                    .price(good.getPrice())
-                    .build();
-            commodities.add(commodity);
-        }
-        return commodities;
+        return getCommodityFromGoods(list);
     }
 
     @Override
@@ -202,26 +148,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.DEALING);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
-        List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-            if (buyer == null) buyer = User.builder().build();
-
-            Commodity commodity = Commodity.builder()
-                    .goodsId(good.getId())
-                    .goodsName(good.getName())
-                    .img(good.getImg())
-                    .description(good.getDescription())
-                    .seller(seller.getUserName())
-                    .sellerEmail(seller.getEmail())
-                    .onSale(good.getOnSale())
-                    .buyer(buyer.getUserName())
-                    .price(good.getPrice())
-                    .build();
-            commodities.add(commodity);
-        }
-        return commodities;
+        return getCommodityFromGoods(list);
     }
 
     @Override
@@ -231,13 +158,16 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getSellerId, userId);
         queryWrapper.eq(Good::getOnSale, SaleState.SOLD);
         List<Good> list = goodMapper.selectList(queryWrapper);
+        return getCommodityFromGoods(list);
+    }
 
+    private List<Commodity> getCommodityFromGoods(List<Good> goodList){
         List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
+        for (Good good : goodList) {
             User seller = userMapper.selectById(good.getSellerId());
             User buyer = userMapper.selectById(good.getBuyerId());
             if (buyer == null) buyer = User.builder().build();
-
+            if (seller == null) seller = User.builder().build();
             Commodity commodity = Commodity.builder()
                     .goodsId(good.getId())
                     .goodsName(good.getName())
@@ -247,6 +177,7 @@ public class GoodServiceImpl implements GoodService {
                     .sellerEmail(seller.getEmail())
                     .onSale(good.getOnSale())
                     .buyer(buyer.getUserName())
+                    .buyerEmail(buyer.getEmail())
                     .price(good.getPrice())
                     .build();
             commodities.add(commodity);
