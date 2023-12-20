@@ -36,17 +36,18 @@ public class GoodServiceImpl implements GoodService {
         List<Commodity> commodities = new ArrayList<>();
         for (Good good : list) {
             User seller = userMapper.selectById(good.getSellerId());
-
+            String[] imgList = getSplitUri(good.getImgList());
             Commodity commodity = Commodity.builder()
                     .goodsId(good.getId())
                     .goodsName(good.getName())
-//                    .img(good.getImg())
-//                    .description(good.getDescription())
+                    .imgList(imgList)
+                    .description(good.getMainDesc())
                     .seller(seller.getUserName())
                     .sellerEmail(seller.getEmail())
                     .onSale(good.getOnSale())
+                    .purchasePrice(good.getPurchasePrice())
+                    .expectPrice(good.getExpectPrice())
                     .buyer("")
-//                    .price(good.getPrice())
                     .buyerEmail("")
                     .build();
             commodities.add(commodity);
@@ -124,25 +125,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.SOLD);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
-        List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-
-            Commodity commodity = Commodity.builder()
-                    .goodsId(good.getId())
-                    .goodsName(good.getName())
-//                    .img(good.getImg())
-//                    .description(good.getDescription())
-                    .seller(seller.getUserName())
-                    .sellerEmail(seller.getEmail())
-                    .onSale(good.getOnSale())
-                    .buyer(buyer.getUserName())
-//                    .price(good.getPrice())
-                    .build();
-            commodities.add(commodity);
-        }
-        return commodities;
+        return getCommoditiesFromGoods(list);
     }
 
     @Override
@@ -153,25 +136,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.DEALING);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
-        List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-
-            Commodity commodity = Commodity.builder()
-                    .goodsId(good.getId())
-                    .goodsName(good.getName())
-//                    .img(good.getImg())
-//                    .description(good.getDescription())
-                    .seller(seller.getUserName())
-                    .sellerEmail(seller.getEmail())
-                    .onSale(good.getOnSale())
-                    .buyer(buyer.getUserName())
-//                    .price(good.getPrice())
-                    .build();
-            commodities.add(commodity);
-        }
-        return commodities;
+        return getCommoditiesFromGoods(list);
     }
 
     @Override
@@ -182,26 +147,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.ON_SALE);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
-        List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-            if (buyer == null) buyer = User.builder().build();
-
-            Commodity commodity = Commodity.builder()
-                    .goodsId(good.getId())
-                    .goodsName(good.getName())
-//                    .img(good.getImg())
-//                    .description(good.getDescription())
-                    .seller(seller.getUserName())
-                    .sellerEmail(seller.getEmail())
-                    .onSale(good.getOnSale())
-                    .buyer(buyer.getUserName())
-//                    .price(good.getPrice())
-                    .build();
-            commodities.add(commodity);
-        }
-        return commodities;
+        return getCommoditiesFromGoods(list);
     }
 
     @Override
@@ -212,26 +158,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.DEALING);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
-        List<Commodity> commodities = new ArrayList<>();
-        for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-            if (buyer == null) buyer = User.builder().build();
-
-            Commodity commodity = Commodity.builder()
-                    .goodsId(good.getId())
-                    .goodsName(good.getName())
-//                    .img(good.getImg())
-//                    .description(good.getDescription())
-                    .seller(seller.getUserName())
-                    .sellerEmail(seller.getEmail())
-                    .onSale(good.getOnSale())
-                    .buyer(buyer.getUserName())
-//                    .price(good.getPrice())
-                    .build();
-            commodities.add(commodity);
-        }
-        return commodities;
+        return getCommoditiesFromGoods(list);
     }
 
     @Override
@@ -242,25 +169,46 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.eq(Good::getOnSale, SaleState.SOLD);
         List<Good> list = goodMapper.selectList(queryWrapper);
 
+        return getCommoditiesFromGoods(list);
+    }
+
+    private List<Commodity> getCommoditiesFromGoods(List<Good> list){
         List<Commodity> commodities = new ArrayList<>();
         for (Good good : list) {
-            User seller = userMapper.selectById(good.getSellerId());
-            User buyer = userMapper.selectById(good.getBuyerId());
-            if (buyer == null) buyer = User.builder().build();
+            User seller = User.builder().build();
+            if (good.getSellerId() != null){
+                seller = userMapper.selectById(good.getSellerId());
+                if (seller == null) seller = User.builder().build();
+            }
 
+            User buyer = User.builder().build();
+            if (good.getSellerId() != null){
+                seller = userMapper.selectById(good.getSellerId());
+                if (seller == null) seller = User.builder().build();
+            }
+
+            String[] imgList = getSplitUri(good.getImgList());
             Commodity commodity = Commodity.builder()
                     .goodsId(good.getId())
                     .goodsName(good.getName())
-//                    .img(good.getImg())
-//                    .description(good.getDescription())
+                    .imgList(imgList)
+                    .description(good.getMainDesc())
                     .seller(seller.getUserName())
                     .sellerEmail(seller.getEmail())
                     .onSale(good.getOnSale())
                     .buyer(buyer.getUserName())
-//                    .price(good.getPrice())
+                    .buyerEmail(buyer.getEmail())
+                    .newnessDesc(good.getNewnessDesc())
+                    .expectPrice(good.getExpectPrice())
+                    .purchasePrice(good.getPurchasePrice())
                     .build();
             commodities.add(commodity);
         }
         return commodities;
+    }
+
+    private String[] getSplitUri(String listStr){
+        String[] ret = listStr.split(",");
+        return ret;
     }
 }

@@ -17,7 +17,7 @@ public class Commodity {
 
     private String description;
 
-    private String img;
+    private String[] imgList;
 
     private String seller;
 
@@ -29,5 +29,9 @@ public class Commodity {
 
     private String buyerEmail;
 
-    private Double price;
+    private Double expectPrice;
+
+    private Double purchasePrice;
+
+    private String newnessDesc;
 }
