@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class CommentVO {
+    private Long commentId;
+
     private String userName;
 
     private String content;

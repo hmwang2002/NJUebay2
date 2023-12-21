@@ -43,4 +43,6 @@ public interface GoodService {
     boolean chat(Long userId, String sellerEmail, String goodName, String content);
 
     List<Commodity> search(String queryStr);
+
+    boolean deleteComment(String userName, Long userId, Long commentId);
 }

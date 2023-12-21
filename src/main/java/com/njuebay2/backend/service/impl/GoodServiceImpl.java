@@ -167,12 +167,23 @@ public class GoodServiceImpl implements GoodService {
                         build();
             }
             CommentVO commentVO = new CommentVO();
+            commentVO.setCommentId(comment.getCommentId());
             commentVO.setUserName(user.getUserName());
             commentVO.setAvatar(user.getPhoto());
             commentVO.setContent(comment.getContent());
             commentVO.setCreateTime(comment.getCreateTime());
             res.add(commentVO);
         }
+        // 按时间排序，从最近的开始
+        res.sort((o1, o2) -> {
+            try {
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(o1.getCreateTime());
+                Date date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(o2.getCreateTime());
+                return date2.compareTo(date1);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
         return res;
     }
 
@@ -205,6 +216,16 @@ public class GoodServiceImpl implements GoodService {
     public List<Commodity> search(String queryStr) {
         List<Good> queryRes = goodMapper.queryFulltext(queryStr);
         return getCommoditiesFromGoods(queryRes);
+    }
+
+    @Override
+    public boolean deleteComment(String userName, Long userId, Long commentId) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getUserName, userName);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user == null || !user.getUserId().equals(userId)) return false;
+        commentMapper.deleteById(commentId);
+        return true;
     }
 
     @Override

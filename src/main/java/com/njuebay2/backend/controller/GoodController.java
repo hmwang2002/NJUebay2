@@ -180,6 +180,18 @@ public class GoodController {
         return Response.success(200, "获取评论成功", commentVOList);
     }
 
+    @RequestMapping("/deleteComment")
+    public Response<?> deleteComment(@RequestParam("userName") String userName, @RequestParam("commentId") Long commentId) {
+        if (StpUtil.isLogin()) {
+            Long userId = StpUtil.getLoginIdAsLong();
+            boolean res = goodService.deleteComment(userName, userId, commentId);
+            if (res) return Response.success(200, "删除评论成功");
+            else return Response.failed(999, "删除评论失败，无权限");
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
+
     @RequestMapping("/informSeller")
     public Response<?> informSeller(@RequestParam("sellerEmail") String sellerEmail, @RequestParam("goodName") String goodName) {
         if (StpUtil.isLogin()) {
