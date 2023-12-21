@@ -266,9 +266,9 @@ public class GoodServiceImpl implements GoodService {
             }
 
             User buyer = User.builder().build();
-            if (good.getSellerId() != null){
-                seller = userMapper.selectById(good.getSellerId());
-                if (seller == null) seller = User.builder().build();
+            if (good.getBuyerId() != null){
+                buyer = userMapper.selectById(good.getBuyerId());
+                if (buyer == null) buyer = User.builder().build();
             }
 
             String[] imgList = getSplitUri(good.getImgList());
