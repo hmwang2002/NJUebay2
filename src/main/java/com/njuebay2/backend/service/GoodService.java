@@ -1,6 +1,7 @@
 package com.njuebay2.backend.service;
 
 import com.njuebay2.backend.domain.entity.Good;
+import com.njuebay2.backend.domain.vo.CommentVO;
 import com.njuebay2.backend.domain.vo.Commodity;
 import com.njuebay2.backend.domain.vo.GoodVO;
 
@@ -32,5 +33,9 @@ public interface GoodService {
     List<Commodity> getSoldGoods();
 
     String confirmDeal(Long goodId);
+
+    void addComment(Long userId, Long goodId, String content);
+
+    List<CommentVO> getGoodComments(Long goodId);
 
 }

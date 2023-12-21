@@ -2,10 +2,7 @@ package com.njuebay2.backend.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.njuebay2.backend.domain.entity.Good;
-import com.njuebay2.backend.domain.vo.Commodity;
-import com.njuebay2.backend.domain.vo.GoodVO;
-import com.njuebay2.backend.domain.vo.MyErrorCode;
-import com.njuebay2.backend.domain.vo.Response;
+import com.njuebay2.backend.domain.vo.*;
 import com.njuebay2.backend.service.GoodService;
 import com.njuebay2.backend.service.OssService;
 import lombok.RequiredArgsConstructor;
@@ -166,5 +163,21 @@ public class GoodController {
         }
     }
 
+    @RequestMapping("/addComment")
+    public Response<?> addComment(@RequestParam("goodId") Long goodId, @RequestParam("content") String content) {
+        if (StpUtil.isLogin()) {
+            Long userId = StpUtil.getLoginIdAsLong();
+            goodService.addComment(userId, goodId, content);
+            return Response.success(200, "添加评论成功");
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
+
+    @RequestMapping("/getCommentByGoodId")
+    public Response<List<CommentVO>> getCommentByGoodId(@RequestParam("goodId") Long goodId) {
+        List<CommentVO> commentVOList = goodService.getGoodComments(goodId);
+        return Response.success(200, "获取评论成功", commentVOList);
+    }
 
 }

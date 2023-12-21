@@ -2,18 +2,23 @@ package com.njuebay2.backend.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.njuebay2.backend.domain.entity.Comment;
 import com.njuebay2.backend.domain.entity.Good;
 import com.njuebay2.backend.domain.entity.SaleState;
 import com.njuebay2.backend.domain.entity.User;
+import com.njuebay2.backend.domain.vo.CommentVO;
 import com.njuebay2.backend.domain.vo.Commodity;
 import com.njuebay2.backend.domain.vo.GoodVO;
+import com.njuebay2.backend.mapper.CommentMapper;
 import com.njuebay2.backend.mapper.GoodMapper;
 import com.njuebay2.backend.mapper.UserMapper;
 import com.njuebay2.backend.service.GoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +31,8 @@ public class GoodServiceImpl implements GoodService {
     private final GoodMapper goodMapper;
 
     private final UserMapper userMapper;
+
+    private final CommentMapper commentMapper;
 
 
     @Override
@@ -130,6 +137,33 @@ public class GoodServiceImpl implements GoodService {
         good.setOnSale(SaleState.SOLD);
         goodMapper.updateById(good);
         return "交易完成";
+    }
+
+    @Override
+    public void addComment(Long userId, Long goodId, String content) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = new Date();
+        Comment comment = new Comment(userId, goodId, content, df.format(date));
+        commentMapper.insert(comment);
+    }
+
+    @Override
+    public List<CommentVO> getGoodComments(Long goodId) {
+        LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Comment::getGoodId, goodId);
+        List<Comment> comments = commentMapper.selectList(queryWrapper);
+
+        List<CommentVO> res = new ArrayList<>();
+        for (Comment comment : comments) {
+            User user = userMapper.selectById(comment.getUserId());
+            CommentVO commentVO = new CommentVO();
+            commentVO.setUserName(user.getUserName());
+            commentVO.setAvatar(user.getPhoto());
+            commentVO.setContent(comment.getContent());
+            commentVO.setCreateTime(comment.getCreateTime());
+            res.add(commentVO);
+        }
+        return res;
     }
 
     @Override
