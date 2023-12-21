@@ -150,7 +150,7 @@ public class GoodController {
     @PostMapping("/confirmDeal")
     public Response<?> confirmDeal(@RequestParam("goodId") Long goodId){
         if (StpUtil.isLogin()) {
-            String res = goodService.cancelBuyGood(goodId);
+            String res = goodService.confirmDeal(goodId);
             if (res.equals("交易完成")){
                 return Response.success(200, "确认交易完成");
             }
