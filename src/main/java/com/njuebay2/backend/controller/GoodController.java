@@ -204,4 +204,10 @@ public class GoodController {
         }
     }
 
+    @RequestMapping("/search")
+    public Response<List<Commodity>> search(@RequestParam("query") String query) {
+        List<Commodity> goods = goodService.search(query);
+        if (goods == null) goods = new ArrayList<>();
+        return Response.success(200, "搜索成功", goods);
+    }
 }
