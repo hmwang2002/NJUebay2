@@ -202,6 +202,12 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
+    public List<Commodity> search(String queryStr) {
+        List<Good> queryRes = goodMapper.queryFulltext(queryStr);
+        return getCommoditiesFromGoods(queryRes);
+    }
+
+    @Override
     public List<Commodity> getBoughtGoods() {
         LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
         Long userId = StpUtil.getLoginIdAsLong();
