@@ -180,4 +180,28 @@ public class GoodController {
         return Response.success(200, "获取评论成功", commentVOList);
     }
 
+    @RequestMapping("/informSeller")
+    public Response<?> informSeller(@RequestParam("sellerEmail") String sellerEmail, @RequestParam("goodName") String goodName) {
+        if (StpUtil.isLogin()) {
+            Long userId = StpUtil.getLoginIdAsLong();
+            boolean res = goodService.informSeller(userId, sellerEmail, goodName);
+            if (res) return Response.success(200, "通知卖家成功");
+            else return Response.failed(999, "通知卖家失败");
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
+
+    @RequestMapping("/chat")
+    public Response<?> chat(@RequestParam("sellerEmail") String sellerEmail, @RequestParam("goodName") String goodName, @RequestParam("content") String content) {
+        if (StpUtil.isLogin()) {
+            Long userId = StpUtil.getLoginIdAsLong();
+            boolean res = goodService.chat(userId, sellerEmail, goodName, content);
+            if (res) return Response.success(200, "发送消息成功");
+            else return Response.failed(999, "发送消息失败");
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
+
 }
