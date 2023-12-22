@@ -143,9 +143,9 @@ public class UserController {
     }
 
     @PostMapping("/getUser")
-    public Response<User> getUser() {
-//get user info
-        User user = userService.getUserInfo();
+    public Response<User> getUser(@RequestParam("userName") String userName) {
+        // 获得用户自己的信息
+        User user = userService.getUserInfo(userName);
         return user == null ? Response.failed(999, "用户不存在") : Response.success(200, "获取用户信息成功", user);
     }
 }

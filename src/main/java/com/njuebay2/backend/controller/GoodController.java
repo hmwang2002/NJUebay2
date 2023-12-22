@@ -1,7 +1,6 @@
 package com.njuebay2.backend.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.njuebay2.backend.domain.entity.Good;
 import com.njuebay2.backend.domain.vo.*;
 import com.njuebay2.backend.service.GoodService;
 import com.njuebay2.backend.service.OssService;
@@ -149,6 +148,7 @@ public class GoodController {
         if (StpUtil.isLogin()) {
             String res = goodService.confirmDeal(goodId);
             if (res.equals("交易完成")){
+                goodService.informBuyerAndSellerEval(goodId);
                 return Response.success(200, "确认交易完成");
             }
 
@@ -221,5 +221,17 @@ public class GoodController {
         List<Commodity> goods = goodService.search(query);
         if (goods == null) goods = new ArrayList<>();
         return Response.success(200, "搜索成功", goods);
+    }
+
+    @RequestMapping("/getNotEval")
+    public Response<List<Commodity>> getNotEvalGoods() {
+        if (StpUtil.isLogin()) {
+            Long userId = StpUtil.getLoginIdAsLong();
+            List<Commodity> goods = goodService.getNotEvalGoods(userId);
+            if (goods == null) goods = new ArrayList<>();
+            return Response.success(200, "获取未评价商品成功", goods);
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
     }
 }

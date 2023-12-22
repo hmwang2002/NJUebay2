@@ -45,4 +45,8 @@ public interface GoodService {
     List<Commodity> search(String queryStr);
 
     boolean deleteComment(String userName, Long userId, Long commentId);
+
+    void informBuyerAndSellerEval(Long goodId);
+
+    List<Commodity> getNotEvalGoods(Long userId);
 }

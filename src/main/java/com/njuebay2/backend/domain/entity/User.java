@@ -39,4 +39,10 @@ public class User {
 
     @TableField("photo")
     private String photo;
+
+    @TableField("avg_score")
+    private Double avgScore;
+
+    @TableField("eval_num")
+    private Integer evalNum;
 }

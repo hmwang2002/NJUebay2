@@ -34,4 +34,8 @@ public class Commodity {
     private Double purchasePrice;
 
     private String newnessDesc;
+
+    private boolean isSellerEval;
+
+    private boolean isBuyerEval;
 }

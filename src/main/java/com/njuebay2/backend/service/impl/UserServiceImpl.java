@@ -97,10 +97,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserInfo() {
+    public User getUserInfo(String userName) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        Long userId = StpUtil.getLoginIdAsLong();
-        queryWrapper.eq(User::getUserId, userId);
+        queryWrapper.eq(User::getUserName, userName);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             return null;
@@ -111,6 +110,8 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .createTime(user.getCreateTime())
                 .photo(user.getPhoto())
+                .avgScore(user.getAvgScore())
+                .evalNum(user.getEvalNum())
                 .build();
     }
 }

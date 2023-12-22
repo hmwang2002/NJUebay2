@@ -48,6 +48,12 @@ public class Good implements Serializable {
 
     @TableField("mainDesc")
     private String mainDesc;
+
+    @TableField("is_seller_eval")
+    private boolean isSellerEval;
+
+    @TableField("is_buyer_eval")
+    private boolean isBuyerEval;
 }
 
 

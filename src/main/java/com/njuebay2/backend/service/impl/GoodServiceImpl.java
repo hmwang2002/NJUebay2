@@ -59,6 +59,8 @@ public class GoodServiceImpl implements GoodService {
                     .expectPrice(good.getExpectPrice())
                     .buyer("")
                     .buyerEmail("")
+                    .isBuyerEval(good.isBuyerEval())
+                    .isBuyerEval(good.isSellerEval())
                     .build();
             commodities.add(commodity);
         }
@@ -197,8 +199,7 @@ public class GoodServiceImpl implements GoodService {
         String buyerEmail = user.getEmail();
         String subject = "您在NJUebay的商品" + goodName + "被意向购买";
         String content = "您的商品" + goodName + "被用户" + buyerName + "意向购买，联系方式为" + buyerEmail;
-        boolean res = mailService.sendSimpleMail(sellerEmail, subject, content);
-        return res;
+        return mailService.sendSimpleMail(sellerEmail, subject, content);
     }
 
     @Override
@@ -208,8 +209,7 @@ public class GoodServiceImpl implements GoodService {
         String buyerEmail = user.getEmail();
         String subject = "您在NJUebay的商品" + goodName + "收到一条私聊";
         content = content + "\n我的联系方式为" + buyerEmail;
-        boolean res = mailService.sendSimpleMail(sellerEmail, subject, content);
-        return res;
+        return mailService.sendSimpleMail(sellerEmail, subject, content);
     }
 
     @Override
@@ -226,6 +226,44 @@ public class GoodServiceImpl implements GoodService {
         if (user == null || !user.getUserId().equals(userId)) return false;
         commentMapper.deleteById(commentId);
         return true;
+    }
+
+    @Override
+    public void informBuyerAndSellerEval(Long goodId) {
+        Good good = goodMapper.selectById(goodId);
+        if (good == null) return;
+        Long buyerId = good.getBuyerId();
+        Long sellerId = good.getSellerId();
+        if (buyerId == null || sellerId == null) return;
+        User buyer = userMapper.selectById(buyerId);
+        User seller = userMapper.selectById(sellerId);
+        if (buyer == null || seller == null) return;
+        String buyerEmail = buyer.getEmail();
+        String sellerEmail = seller.getEmail();
+        String goodName = good.getName();
+        String subject = "您在NJUebay购买的商品" + goodName + "交易完成";
+        String content = "您的商品" + goodName + "交易完成，请对卖家" + seller.getUserName() + "进行评价";
+        mailService.sendSimpleMail(buyerEmail, subject, content);
+
+        subject = "您在NJUebay出售的商品" + goodName + "交易完成";
+        content = "您在NJUebay的商品" + goodName + "交易完成，请对买家" + buyer.getUserName() + "进行评价";
+        mailService.sendSimpleMail(sellerEmail, subject, content);
+    }
+
+    @Override
+    public List<Commodity> getNotEvalGoods(Long userId) {
+        LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Good::getSellerId, userId);
+        queryWrapper.eq(Good::isSellerEval, false);
+        List<Good> list1 = goodMapper.selectList(queryWrapper);
+
+        queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Good::getBuyerId, userId);
+        queryWrapper.eq(Good::isBuyerEval, false);
+        List<Good> list2 = goodMapper.selectList(queryWrapper);
+
+        list1.addAll(list2);
+        return getCommoditiesFromGoods(list1);
     }
 
     @Override
@@ -312,6 +350,8 @@ public class GoodServiceImpl implements GoodService {
                     .newnessDesc(good.getNewnessDesc())
                     .expectPrice(good.getExpectPrice())
                     .purchasePrice(good.getPurchasePrice())
+                    .isBuyerEval(good.isBuyerEval())
+                    .isSellerEval(good.isSellerEval())
                     .build();
             commodities.add(commodity);
         }
@@ -319,7 +359,6 @@ public class GoodServiceImpl implements GoodService {
     }
 
     private String[] getSplitUri(String listStr){
-        String[] ret = listStr.split(",");
-        return ret;
+        return listStr.split(",");
     }
 }
