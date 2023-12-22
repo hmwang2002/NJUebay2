@@ -1,10 +1,11 @@
 package com.njuebay2.backend.service.impl;
 
 import cn.dev33.satoken.secure.BCrypt;
-import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.njuebay2.backend.domain.entity.Good;
 import com.njuebay2.backend.domain.entity.User;
 import com.njuebay2.backend.domain.vo.UserVO;
+import com.njuebay2.backend.mapper.GoodMapper;
 import com.njuebay2.backend.mapper.UserMapper;
 import com.njuebay2.backend.service.UserService;
 import com.njuebay2.backend.utils.RedisCache;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author whm
@@ -23,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     private final RedisCache redisCache;
+
+    private final GoodMapper goodMapper;
 
     @Override
     public Long login(String userName, String password) {
@@ -113,5 +117,29 @@ public class UserServiceImpl implements UserService {
                 .avgScore(user.getAvgScore())
                 .evalNum(user.getEvalNum())
                 .build();
+    }
+
+    @Override
+    public String eval(Long goodId, String userName, Integer score) {
+        Good good = goodMapper.selectById(goodId);
+        if (good == null) return "商品不存在";
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getUserName, userName);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user == null) return "用户不存在";
+        user.setEvalNum(user.getEvalNum() + 1);
+        user.setAvgScore((user.getAvgScore() * (user.getEvalNum() - 1) + score) / user.getEvalNum());
+        userMapper.updateById(user);
+
+        Long userId = user.getUserId();
+        if (Objects.equals(good.getSellerId(), userId)) {
+            good.setBuyerEval(true);
+        } else if (Objects.equals(good.getBuyerId(), userId)){
+            good.setSellerEval(true);
+        } else {
+            return "评价失败，该用户既不是卖家也不是买家";
+        }
+        goodMapper.updateById(good);
+        return "评价成功";
     }
 }

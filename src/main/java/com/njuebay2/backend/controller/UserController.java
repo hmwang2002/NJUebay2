@@ -148,4 +148,18 @@ public class UserController {
         User user = userService.getUserInfo(userName);
         return user == null ? Response.failed(999, "用户不存在") : Response.success(200, "获取用户信息成功", user);
     }
+
+    @RequestMapping("eval")
+    public Response<?> eval(@RequestParam("goodId") Long goodId, @RequestParam("userName") String userName, @RequestParam("score") Integer score) {
+        if (StpUtil.isLogin()) {
+            String res = userService.eval(goodId, userName, score);
+            if (res.equals("评价成功")) {
+                return Response.success(200, res);
+            } else {
+                return Response.failed(999, res);
+            }
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
 }
