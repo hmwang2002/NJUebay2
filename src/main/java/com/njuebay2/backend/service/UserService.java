@@ -18,5 +18,7 @@ public interface UserService {
 
     User getUserInfo(String userName);
 
+    User getCurrentUserInfo();
+
     String eval(Long goodId, String userName, Integer score);
 }

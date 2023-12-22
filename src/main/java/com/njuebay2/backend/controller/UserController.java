@@ -149,6 +149,13 @@ public class UserController {
         return user == null ? Response.failed(999, "用户不存在") : Response.success(200, "获取用户信息成功", user);
     }
 
+    @PostMapping("/getCurrentUser")
+    public Response<User> getCurrentUser() {
+        // 获得用户自己的信息
+        User user = userService.getCurrentUserInfo();
+        return user == null ? Response.failed(999, "用户不存在") : Response.success(200, "获取用户信息成功", user);
+    }
+
     @RequestMapping("eval")
     public Response<?> eval(@RequestParam("goodId") Long goodId, @RequestParam("userName") String userName, @RequestParam("score") Integer score) {
         if (StpUtil.isLogin()) {
