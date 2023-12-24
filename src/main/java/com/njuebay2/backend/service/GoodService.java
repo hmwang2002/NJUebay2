@@ -38,7 +38,10 @@ public interface GoodService {
 
     List<CommentVO> getGoodComments(Long goodId);
 
-    boolean informSeller(Long userId, String sellerEmail, String goodName);
+    boolean informSeller(Long goodId, boolean isPurchase);
+
+    boolean informBuyer(Long goodId);
+
 
     boolean chat(Long userId, String sellerEmail, String goodName, String content);
 

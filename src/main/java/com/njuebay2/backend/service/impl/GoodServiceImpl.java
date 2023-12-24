@@ -190,16 +190,43 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public boolean informSeller(Long userId, String sellerEmail, String goodName) {
-        User user = userMapper.selectById(userId);
-        if (user == null) {
+    public boolean informSeller(Long goodId, boolean isPurchase) {
+        Good good = goodMapper.selectById(goodId);
+        if (good == null) {
             return false;
         }
-        String buyerName = user.getUserName();
-        String buyerEmail = user.getEmail();
+        User buyer = userMapper.selectById(good.getBuyerId());
+        User seller = userMapper.selectById(good.getSellerId());
+
+
+        String buyerName = buyer.getUserName();
+        String buyerEmail = buyer.getEmail();
+        String goodName = good.getName();
         String subject = "您在NJUebay的商品" + goodName + "被意向购买";
         String content = "您的商品" + goodName + "被用户" + buyerName + "意向购买，联系方式为" + buyerEmail;
-        return mailService.sendSimpleMail(sellerEmail, subject, content);
+        if (!isPurchase) {
+            subject = "您在NJUebay的商品" + goodName + "被取消意向购买";
+            content = "您的商品" + goodName + "被用户" + buyerName + "取消意向购买, 商品继续在商城出售";
+        }
+        return mailService.sendSimpleMail(seller.getEmail(), subject, content);
+    }
+
+    @Override
+    public boolean informBuyer(Long goodId) {
+        Good good = goodMapper.selectById(goodId);
+        if (good == null) {
+            return false;
+        }
+        User buyer = userMapper.selectById(good.getBuyerId());
+        User seller = userMapper.selectById(good.getSellerId());
+
+
+        String sellerName = seller.getUserName();
+        String sellerEmail = seller.getEmail();
+        String goodName = good.getName();
+        String subject = "您在NJUebay意向购买的商品" + goodName + "被卖家取消";
+        String content = "您意向购买的商品" + goodName + "被卖家" + sellerName + "取消，卖家联系方式为" + sellerEmail + "， 您可以继续进入NJUebay选购";
+        return mailService.sendSimpleMail(seller.getEmail(), subject, content);
     }
 
     @Override

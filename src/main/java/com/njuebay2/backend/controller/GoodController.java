@@ -70,7 +70,8 @@ public class GoodController {
     public Response<?> wannaBuyGood(@RequestParam("goodId") Long goodId) {
         if (StpUtil.isLogin()) {
             String res = goodService.wannaBuyGood(goodId);
-            if (res.equals("购买成功")) {
+            if (res.equals("开始交易")) {
+                goodService.informSeller(goodId, true);
                 return Response.success(200, res);
             } else {
                 return Response.failed(999, res);
@@ -81,8 +82,14 @@ public class GoodController {
     }
 
     @RequestMapping("/cancelBuy")
-    public Response<?> CancelBuyGood(@RequestParam("goodId") Long goodId) {
+    public Response<?> CancelBuyGood(@RequestParam("goodId") Long goodId, @RequestParam("isBuyer") boolean isBuyer) {
         if (StpUtil.isLogin()) {
+            if (isBuyer) {
+                goodService.informSeller(goodId, false);
+            } else {
+                goodService.informBuyer(goodId);
+            }
+
             String res = goodService.cancelBuyGood(goodId);
             return Response.success(200, res);
         } else {
@@ -193,10 +200,10 @@ public class GoodController {
     }
 
     @RequestMapping("/informSeller")
-    public Response<?> informSeller(@RequestParam("sellerEmail") String sellerEmail, @RequestParam("goodName") String goodName) {
+    public Response<?> informSeller(@RequestParam("goodId") Long goodId, @RequestParam("isPurchase") boolean isPurchase) {
         if (StpUtil.isLogin()) {
             Long userId = StpUtil.getLoginIdAsLong();
-            boolean res = goodService.informSeller(userId, sellerEmail, goodName);
+            boolean res = goodService.informSeller(goodId, isPurchase);
             if (res) return Response.success(200, "通知卖家成功");
             else return Response.failed(999, "通知卖家失败");
         } else {
