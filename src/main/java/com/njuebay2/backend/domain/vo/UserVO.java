@@ -15,4 +15,6 @@ public class UserVO {
     private String email;
 
     private String verifyCode;
+
+    private String address;
 }

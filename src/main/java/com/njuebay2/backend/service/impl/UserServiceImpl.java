@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
                 .email(userVO.getEmail())
                 .createTime(new Date())
                 .photo("https://kiyotakawang.oss-cn-hangzhou.aliyuncs.com/%E9%BB%98%E8%AE%A4%E5%A4%B4%E5%83%8F.jpg")
+                .address(userVO.getAddress())
                 .build();
         userMapper.insert(user);
         return "注册成功";
@@ -117,6 +118,7 @@ public class UserServiceImpl implements UserService {
                 .photo(user.getPhoto())
                 .avgScore(user.getAvgScore())
                 .evalNum(user.getEvalNum())
+                .address(user.getAddress())
                 .build();
     }
 
@@ -137,6 +139,7 @@ public class UserServiceImpl implements UserService {
                 .photo(user.getPhoto())
                 .avgScore(user.getAvgScore())
                 .evalNum(user.getEvalNum())
+                .address(user.getAddress())
                 .build();
     }
 

@@ -45,4 +45,7 @@ public class User {
 
     @TableField("eval_num")
     private Integer evalNum;
+
+    @TableField("address")
+    private String address;
 }
