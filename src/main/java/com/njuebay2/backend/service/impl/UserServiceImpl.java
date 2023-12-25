@@ -111,17 +111,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return null;
         }
-        return User.builder()
-                .userId(user.getUserId())
-                .userName(user.getUserName())
-                .email(user.getEmail())
-                .createTime(user.getCreateTime())
-                .lastLoginTime(user.getLastLoginTime())
-                .photo(user.getPhoto())
-                .avgScore(user.getAvgScore())
-                .evalNum(user.getEvalNum())
-                .address(user.getAddress())
-                .build();
+        return user;
     }
 
     @Override
@@ -133,17 +123,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return null;
         }
-        return User.builder()
-                .userId(user.getUserId())
-                .userName(user.getUserName())
-                .email(user.getEmail())
-                .createTime(user.getCreateTime())
-                .photo(user.getPhoto())
-                .avgScore(user.getAvgScore())
-                .evalNum(user.getEvalNum())
-                .address(user.getAddress())
-                .lastLoginTime(user.getLastLoginTime())
-                .build();
+        return user;
     }
 
     @Override
