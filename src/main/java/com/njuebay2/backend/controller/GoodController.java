@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/good")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin()
 public class GoodController {
     private final GoodService goodService;
 

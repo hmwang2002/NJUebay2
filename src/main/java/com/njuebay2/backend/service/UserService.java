@@ -1,6 +1,7 @@
 package com.njuebay2.backend.service;
 
 import com.njuebay2.backend.domain.entity.User;
+import com.njuebay2.backend.domain.vo.UserEditInfoVO;
 import com.njuebay2.backend.domain.vo.UserVO;
 
 /**
@@ -21,4 +22,6 @@ public interface UserService {
     User getCurrentUserInfo();
 
     String eval(Long goodId, String userName, Integer score);
+
+    String edit(Long userId, UserEditInfoVO userEditInfoVO);
 }

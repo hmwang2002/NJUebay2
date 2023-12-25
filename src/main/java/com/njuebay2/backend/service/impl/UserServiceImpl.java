@@ -5,6 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.njuebay2.backend.domain.entity.Good;
 import com.njuebay2.backend.domain.entity.User;
+import com.njuebay2.backend.domain.vo.UserEditInfoVO;
 import com.njuebay2.backend.domain.vo.UserVO;
 import com.njuebay2.backend.mapper.GoodMapper;
 import com.njuebay2.backend.mapper.UserMapper;
@@ -140,6 +141,7 @@ public class UserServiceImpl implements UserService {
                 .avgScore(user.getAvgScore())
                 .evalNum(user.getEvalNum())
                 .address(user.getAddress())
+                .lastLoginTime(user.getLastLoginTime())
                 .build();
     }
 
@@ -165,5 +167,17 @@ public class UserServiceImpl implements UserService {
         }
         goodMapper.updateById(good);
         return "评价成功";
+    }
+
+    @Override
+    public String edit(Long userId, UserEditInfoVO userEditInfoVO) {
+        User user = userMapper.selectById(userId);
+        if (user == null) return "用户不存在";
+        user.setUserName(userEditInfoVO.getUserName());
+        user.setAddress(userEditInfoVO.getAddress());
+        user.setPhoto(userEditInfoVO.getPhoto());
+        user.setEmail(userEditInfoVO.getEmail());
+        userMapper.updateById(user);
+        return "修改用户信息成功";
     }
 }

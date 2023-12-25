@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.njuebay2.backend.domain.entity.User;
 import com.njuebay2.backend.domain.vo.Response;
+import com.njuebay2.backend.domain.vo.UserEditInfoVO;
 import com.njuebay2.backend.domain.vo.UserVO;
 import com.njuebay2.backend.service.MailService;
 import com.njuebay2.backend.service.OssService;
@@ -119,6 +120,22 @@ public class UserController {
         String res = userService.update(userVO);
         if (res.equals("修改密码成功")) {
             return Response.success(200, "修改密码成功！");
+        } else {
+            return Response.failed(999, res);
+        }
+    }
+
+    /**
+     * 修改用户信息
+     * @param userEditInfoVO
+     * @return
+     */
+    @PostMapping("/edit")
+    public Response<?> edit(@RequestBody UserEditInfoVO userEditInfoVO) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        String res = userService.edit(userId, userEditInfoVO);
+        if (res.equals("修改用户信息成功")) {
+            return Response.success(200, "修改用户信息成功！");
         } else {
             return Response.failed(999, res);
         }
