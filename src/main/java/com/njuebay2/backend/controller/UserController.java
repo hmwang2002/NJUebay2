@@ -132,12 +132,16 @@ public class UserController {
      */
     @PostMapping("/edit")
     public Response<?> edit(@RequestBody UserEditInfoVO userEditInfoVO) {
-        Long userId = StpUtil.getLoginIdAsLong();
-        String res = userService.edit(userId, userEditInfoVO);
-        if (res.equals("修改用户信息成功")) {
-            return Response.success(200, "修改用户信息成功！");
+        if (StpUtil.isLogin()) {
+            Long userId = StpUtil.getLoginIdAsLong();
+            String res = userService.edit(userId, userEditInfoVO);
+            if (res.equals("修改用户信息成功")) {
+                return Response.success(200, "修改用户信息成功！");
+            } else {
+                return Response.failed(999, res);
+            }
         } else {
-            return Response.failed(999, res);
+            return Response.failed(999, "用户未登录");
         }
     }
 
@@ -169,8 +173,12 @@ public class UserController {
     @PostMapping("/getCurrentUser")
     public Response<User> getCurrentUser() {
         // 获得用户自己的信息
-        User user = userService.getCurrentUserInfo();
-        return user == null ? Response.failed(999, "用户不存在") : Response.success(200, "获取用户信息成功", user);
+        if (StpUtil.isLogin()) {
+            User user = userService.getCurrentUserInfo();
+            return user == null ? Response.failed(999, "用户不存在") : Response.success(200, "获取用户信息成功", user);
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
     }
 
     @RequestMapping("eval")
