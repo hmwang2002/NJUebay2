@@ -56,8 +56,8 @@ public class GoodController {
         }
     }
 
-    @PostMapping("/delete")
-    public Response<?> deleteGood(@RequestParam("goodId") Long goodId) {
+    @DeleteMapping("/delete/{goodId}")
+    public Response<?> deleteGood(@PathVariable("goodId") Long goodId) {
         if (StpUtil.isLogin()) {
             goodService.deleteGood(goodId);
             return Response.success(200, "删除商品成功");
@@ -241,4 +241,19 @@ public class GoodController {
             return Response.failed(999, "用户未登录");
         }
     }
+
+    @PostMapping("/editInfo")
+    public Response<?> editInfo(@RequestBody GoodEditInfoVO goodEditInfoVO) {
+        if (StpUtil.isLogin()) {
+            String res = goodService.editInfo(goodEditInfoVO);
+            if (res.equals("修改商品信息成功")) {
+                return Response.success(200, "修改商品信息成功！");
+            } else {
+                return Response.failed(999, res);
+            }
+        } else {
+            return Response.failed(999, "用户未登录");
+        }
+    }
+
 }

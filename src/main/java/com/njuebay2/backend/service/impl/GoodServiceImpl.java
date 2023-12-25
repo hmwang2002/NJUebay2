@@ -8,6 +8,7 @@ import com.njuebay2.backend.domain.entity.SaleState;
 import com.njuebay2.backend.domain.entity.User;
 import com.njuebay2.backend.domain.vo.CommentVO;
 import com.njuebay2.backend.domain.vo.Commodity;
+import com.njuebay2.backend.domain.vo.GoodEditInfoVO;
 import com.njuebay2.backend.domain.vo.GoodVO;
 import com.njuebay2.backend.mapper.CommentMapper;
 import com.njuebay2.backend.mapper.GoodMapper;
@@ -90,6 +91,10 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public void deleteGood(Long goodId) {
+        // 在此之前要先查查有没有商品评论，由于设置了外键，所以要先删除评论
+        LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Comment::getGoodId, goodId);
+        commentMapper.delete(queryWrapper);
         goodMapper.deleteById(goodId);
     }
 
@@ -387,5 +392,23 @@ public class GoodServiceImpl implements GoodService {
 
     private String[] getSplitUri(String listStr){
         return listStr.split(",");
+    }
+
+    @Override
+    public String editInfo(GoodEditInfoVO goodEditInfoVO) {
+        Good good = goodMapper.selectById(goodEditInfoVO.getGoodId());
+        if (good == null) return "商品不存在";
+        if (!good.getSellerId().equals(StpUtil.getLoginIdAsLong())) return "无权限";
+        good.setName(goodEditInfoVO.getGoodName());
+        good.setMainDesc(goodEditInfoVO.getDescription());
+        good.setExpectPrice(goodEditInfoVO.getExpectPrice());
+        StringBuilder sb = new StringBuilder();
+        for (String url : goodEditInfoVO.getImgList()) {
+            sb.append(url).append(",");
+        }
+        good.setImgList(sb.toString());
+        // 保存
+        goodMapper.updateById(good);
+        return "修改商品信息成功";
     }
 }

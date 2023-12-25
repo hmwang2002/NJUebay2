@@ -3,6 +3,7 @@ package com.njuebay2.backend.service;
 import com.njuebay2.backend.domain.entity.Good;
 import com.njuebay2.backend.domain.vo.CommentVO;
 import com.njuebay2.backend.domain.vo.Commodity;
+import com.njuebay2.backend.domain.vo.GoodEditInfoVO;
 import com.njuebay2.backend.domain.vo.GoodVO;
 
 import java.util.List;
@@ -42,7 +43,6 @@ public interface GoodService {
 
     boolean informBuyer(Long goodId);
 
-
     boolean chat(Long userId, String sellerEmail, String goodName, String content);
 
     List<Commodity> search(String queryStr);
@@ -52,4 +52,6 @@ public interface GoodService {
     void informBuyerAndSellerEval(Long goodId);
 
     List<Commodity> getNotEvalGoods(Long userId);
+
+    String editInfo(GoodEditInfoVO goodEditInfoVO);
 }
