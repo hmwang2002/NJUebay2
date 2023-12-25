@@ -116,6 +116,7 @@ public class UserServiceImpl implements UserService {
                 .userName(user.getUserName())
                 .email(user.getEmail())
                 .createTime(user.getCreateTime())
+                .lastLoginTime(user.getLastLoginTime())
                 .photo(user.getPhoto())
                 .avgScore(user.getAvgScore())
                 .evalNum(user.getEvalNum())
