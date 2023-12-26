@@ -62,6 +62,7 @@ public class GoodServiceImpl implements GoodService {
                     .buyerEmail("")
                     .isBuyerEval(good.isBuyerEval())
                     .isBuyerEval(good.isSellerEval())
+                    .newnessDesc(good.getNewnessDesc())
                     .build();
             commodities.add(commodity);
         }

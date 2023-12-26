@@ -26,7 +26,7 @@ spring:
     username: ikun
     password: njuebay2
     hikari:
-      max-lifetime: 300000
+      max-lifetime: 200000
 
 
   servlet:
