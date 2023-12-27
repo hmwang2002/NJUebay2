@@ -1,10 +1,13 @@
 package com.njuebay2.backend.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.pagehelper.PageInfo;
 import com.njuebay2.backend.domain.vo.*;
 import com.njuebay2.backend.service.GoodService;
 import com.njuebay2.backend.service.OssService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +47,15 @@ public class GoodController {
         List<Commodity> goods = goodService.getGoodsOnSale();
         if (goods == null) goods = new ArrayList<>();
         return Response.success(200, "获取在售商品成功", goods);
+    }
+
+    @GetMapping("/getOnSaleByPage")
+    public Response<PageInfo<Commodity>> getOnSaleByPage(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "8") int size
+    ) {
+        PageInfo<Commodity> pageInfo = goodService.getGoodsOnSaleByPage(page, size);
+        return Response.success(200, "获取商品成功", pageInfo);
     }
 
     @PostMapping("/add")

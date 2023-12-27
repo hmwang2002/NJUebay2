@@ -1,10 +1,13 @@
 package com.njuebay2.backend.service;
 
+import com.github.pagehelper.PageInfo;
 import com.njuebay2.backend.domain.entity.Good;
 import com.njuebay2.backend.domain.vo.CommentVO;
 import com.njuebay2.backend.domain.vo.Commodity;
 import com.njuebay2.backend.domain.vo.GoodEditInfoVO;
 import com.njuebay2.backend.domain.vo.GoodVO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -14,6 +17,8 @@ import java.util.List;
  */
 public interface GoodService {
     List<Commodity> getGoodsOnSale();
+
+    PageInfo<Commodity> getGoodsOnSaleByPage(int page, int size);
 
     void addGood(GoodVO goodVO);
 

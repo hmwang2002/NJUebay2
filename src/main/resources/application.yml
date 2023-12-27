@@ -64,3 +64,10 @@ spring:
     username: 2509553015@qq.com
     password: psjpzuiikduhdiea
     default-encoding: UTF-8
+
+# 配置pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

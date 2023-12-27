@@ -2,6 +2,8 @@ package com.njuebay2.backend.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.njuebay2.backend.domain.entity.Comment;
 import com.njuebay2.backend.domain.entity.Good;
 import com.njuebay2.backend.domain.entity.SaleState;
@@ -16,6 +18,7 @@ import com.njuebay2.backend.mapper.UserMapper;
 import com.njuebay2.backend.service.GoodService;
 import com.njuebay2.backend.service.MailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -37,6 +40,51 @@ public class GoodServiceImpl implements GoodService {
     private final CommentMapper commentMapper;
 
     private final MailService mailService;
+
+    @Override
+    public PageInfo<Commodity> getGoodsOnSaleByPage(int page, int size) {
+        // 调用PageHelper的startPage方法来初始化分页参数
+        PageHelper.startPage(page, size);
+
+        // 紧接着的查询就是一个分页查询，PageHelper会自动对其进行分页处理
+        LambdaQueryWrapper<Good> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Good::getOnSale, SaleState.ON_SALE);
+        List<Good> list = goodMapper.selectList(queryWrapper); // 这个查询会被分页
+
+        // 将Good对象转换为Commodity对象
+        List<Commodity> commodities = new ArrayList<>();
+        for (Good good : list) {
+            User seller = userMapper.selectById(good.getSellerId());
+            String[] imgList = getSplitUri(good.getImgList());
+            Commodity commodity = Commodity.builder()
+                    .goodsId(good.getId())
+                    .goodsName(good.getName())
+                    .imgList(imgList)
+                    .description(good.getMainDesc())
+                    .seller(seller.getUserName())
+                    .sellerEmail(seller.getEmail())
+                    .onSale(good.getOnSale())
+                    .purchasePrice(good.getPurchasePrice())
+                    .expectPrice(good.getExpectPrice())
+                    .buyer("")
+                    .buyerEmail("")
+                    .isBuyerEval(good.isBuyerEval())
+                    .isBuyerEval(good.isSellerEval())
+                    .newnessDesc(good.getNewnessDesc())
+                    .build();
+            commodities.add(commodity);
+        }
+
+        // 使用PageInfo包装查询结果，这时PageInfo会包含分页信息，包括总记录数
+        PageInfo<Good> goodPageInfo = new PageInfo<>(list);
+
+        // 创建用于返回的PageInfo<Commodity>对象，并复制分页信息
+        PageInfo<Commodity> commodityPageInfo = new PageInfo<>();
+        BeanUtils.copyProperties(goodPageInfo, commodityPageInfo);
+        commodityPageInfo.setList(commodities); // 设置转换后的列表
+
+        return commodityPageInfo;
+    }
 
 
     @Override

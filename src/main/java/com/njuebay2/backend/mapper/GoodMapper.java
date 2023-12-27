@@ -16,4 +16,5 @@ import java.util.List;
 public interface GoodMapper extends BaseMapper<Good> {
     @Select("select * from good where match(name, mainDesc) against(#{queryStr})")
     List<Good> queryFulltext(@Param("queryStr") String queryStr);
+
 }
