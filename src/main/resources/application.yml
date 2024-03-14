@@ -22,9 +22,9 @@ sa-token:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.113.151.211:3308/njuebay22?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-    username: ikun
-    password: njuebay2
+    url: jdbc:mysql://localhost:3308/njuebay22?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: ****
+    password: ****
     hikari:
       max-lifetime: 200000
 
@@ -36,7 +36,7 @@ spring:
 
   data:
     redis:
-      host: 47.113.151.211
+      host: localhost
       password: njuebay2
       port: 6380
       database: 0
@@ -61,8 +61,8 @@ spring:
 
   mail:
     host: smtp.qq.com
-    username: 2509553015@qq.com
-    password: psjpzuiikduhdiea
+    username: **************
+    password: **************
     default-encoding: UTF-8
 
 # 配置pagehelper
